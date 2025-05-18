@@ -23,7 +23,6 @@ let dbPort = process.env.DB_PORT || '0000'
 
 const dialectOptions: any = {};
 dialectOptions.ssl = {
-  require: true,
   rejectUnauthorized: false,
 };
 export const db: Sequelize = new Sequelize(dbName, dbUser, dbPassword, {

@@ -23,7 +23,7 @@ const handleAuthorization = async (req: Request, res: any, next: NextFunction) =
         return res.status(STATUS_CODE.EC401).json(Handler.Error(RES_STATUS.E2, STATUS_CODE.EC401, 'Header Token Missing!'));
     }
 
-    const user = await Users.findOne({
+    const user:any = await Users.findOne({
         where : {login_token : token, vr : vr}
     })
 
@@ -40,6 +40,7 @@ const handleAuthorization = async (req: Request, res: any, next: NextFunction) =
     try {
 
         if (!verifyToken) {
+            user.update({ login_token: null, vr: null })
             return res.status(STATUS_CODE.EC401).json(Handler.Error(RES_STATUS.E2, STATUS_CODE.EC401, RES_MESSAGE.EM402));
         }
 

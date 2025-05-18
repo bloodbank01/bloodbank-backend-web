@@ -32,7 +32,13 @@ class AppointmentService {
           },
           {
             model: Doctors,
-            as: 'doctor'
+            as: 'doctor',
+            include : [
+              {
+                model: Profile,
+                as: 'profile'
+              }
+            ]
           },
           {
             model: Profile,

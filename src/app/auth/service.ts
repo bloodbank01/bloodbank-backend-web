@@ -127,13 +127,13 @@ class AuthService {
         return Handler.Error(RES_STATUS.E2, STATUS_CODE.EC401, "The Password You Entered Is Incorrect!")
       }
 
-      // if (exitUser.dataValues.login_token != null) {
-      //   const decode = await Handler.verifyToken(exitUser.dataValues.login_token)
+      if (exitUser.dataValues.login_token != null) {
+        const decode = await Handler.verifyToken(exitUser.dataValues.login_token)
 
-      //   if (decode) {
-      //     return Handler.Error(RES_STATUS.E2, STATUS_CODE.EC409, "Oops! You’re Already Logged In On Another Device!")
-      //   }
-      // }
+        if (decode) {
+          return Handler.Error(RES_STATUS.E2, STATUS_CODE.EC409, "Oops! You’re Already Logged In On Another Device!")
+        }
+      }
 
       let vr = await this.generateRandomString()
       const token = await Handler.generateToken({ ...exitUser.dataValues, vr }, '24h')
@@ -143,7 +143,7 @@ class AuthService {
       let history_data: any = { user_id: exitUser.dataValues.id, email: exitUser.dataValues.email, login_token: token, vr }
       await Login_History.create(history_data)
 
-      return Handler.Success(RES_STATUS.E1, STATUS_CODE.EC200, "Login Successfully!", { jwt: token, vr, user: { id: exitUser.dataValues.id, email : exitUser.dataValues.email  } })
+      return Handler.Success(RES_STATUS.E1, STATUS_CODE.EC200, "Login Successfully!", { jwt: token, vr, user: { id: exitUser.dataValues.id, email: exitUser.dataValues.email } })
 
     } catch (error: any) {
       console.log('Error From Login:- ', error)
